@@ -57,7 +57,7 @@ __decorate([
     __metadata("design:type", String)
 ], ListingEntity.prototype, "address", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Price in USD', example: 450000.00 }),
+    (0, swagger_1.ApiProperty)({ description: 'Price in USD', example: 450000.0 }),
     __metadata("design:type", Number)
 ], ListingEntity.prototype, "price", void 0);
 __decorate([
@@ -69,17 +69,25 @@ __decorate([
     __metadata("design:type", String)
 ], ListingEntity.prototype, "status", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Number of bedrooms', example: 3, nullable: true }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Number of bedrooms',
+        example: 3,
+        nullable: true,
+    }),
     __metadata("design:type", Object)
 ], ListingEntity.prototype, "bedrooms", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Number of bathrooms', example: 2, nullable: true }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Number of bathrooms',
+        example: 2,
+        nullable: true,
+    }),
     __metadata("design:type", Object)
 ], ListingEntity.prototype, "bathrooms", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Property area in sq ft',
-        example: 2500.50,
+        example: 2500.5,
         nullable: true,
     }),
     __metadata("design:type", Object)

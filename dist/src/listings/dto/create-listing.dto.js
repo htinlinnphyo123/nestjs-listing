@@ -56,7 +56,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Price in USD',
-        example: 450000.00,
+        example: 450000.0,
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
@@ -109,7 +109,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Property area in square feet',
-        example: 2500.50,
+        example: 2500.5,
         required: false,
     }),
     (0, class_validator_1.IsNumber)(),

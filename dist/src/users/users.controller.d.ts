@@ -5,20 +5,20 @@ export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
     create(createUserDto: CreateUserDto): Promise<{
+        password: string;
         email: string;
         name: string;
-        password: string;
         createdAt: Date;
         updatedAt: Date;
         id: number;
     }>;
     findAll(): Promise<({
         listings: {
+            description: string | null;
+            title: string;
             createdAt: Date;
             updatedAt: Date;
             id: number;
-            title: string;
-            description: string | null;
             address: string;
             price: import("@prisma/client-runtime-utils").Decimal;
             propertyType: string;
@@ -29,20 +29,20 @@ export declare class UsersController {
             userId: number;
         }[];
     } & {
+        password: string;
         email: string;
         name: string;
-        password: string;
         createdAt: Date;
         updatedAt: Date;
         id: number;
     })[]>;
     findOne(id: number): Promise<{
         listings: {
+            description: string | null;
+            title: string;
             createdAt: Date;
             updatedAt: Date;
             id: number;
-            title: string;
-            description: string | null;
             address: string;
             price: import("@prisma/client-runtime-utils").Decimal;
             propertyType: string;
@@ -53,25 +53,25 @@ export declare class UsersController {
             userId: number;
         }[];
     } & {
+        password: string;
         email: string;
         name: string;
-        password: string;
         createdAt: Date;
         updatedAt: Date;
         id: number;
     }>;
     update(id: number, updateUserDto: UpdateUserDto): Promise<{
+        password: string;
         email: string;
         name: string;
-        password: string;
         createdAt: Date;
         updatedAt: Date;
         id: number;
     }>;
     remove(id: number): Promise<{
+        password: string;
         email: string;
         name: string;
-        password: string;
         createdAt: Date;
         updatedAt: Date;
         id: number;
