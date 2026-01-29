@@ -3,7 +3,7 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
@@ -22,6 +22,10 @@ export class UsersService {
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
+        // Optionally log the driver adapter error if it exists
+        if (error.meta?.driverAdapterError) {
+          console.error(error.meta.driverAdapterError);
+        }
         throw new ConflictException('A user with this email already exists');
       }
       throw error;

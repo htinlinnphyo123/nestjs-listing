@@ -3,7 +3,6 @@ import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
-    description: 'User email address',
     example: 'john.doe@example.com',
   })
   @IsEmail()
@@ -11,15 +10,13 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
-    description: 'User full name',
-    example: 'John Doe',
+    example: 'John Doe Sa yar gyi',
   })
   @IsString()
   @IsNotEmpty()
   name: string;
 
   @ApiProperty({
-    description: 'User password',
     example: 'mySecurePassword123',
     minLength: 6,
   })
