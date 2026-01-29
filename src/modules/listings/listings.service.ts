@@ -1,47 +1,27 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../core/prisma/prisma.service';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { CreateListingDto } from './dto/create-listing.dto';
 import { UpdateListingDto } from './dto/update-listing.dto';
+import type { IListingsRepository } from './repositories/listings.repository.interface';
+import { LISTINGS_REPOSITORY } from './repositories/listings.repository.interface';
 
 @Injectable()
 export class ListingsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    @Inject(LISTINGS_REPOSITORY)
+    private readonly listingsRepository: IListingsRepository,
+  ) {}
 
   async create(createListingDto: CreateListingDto) {
-    // Verify that user exists
-    const user = await this.prisma.user.findUnique({
-      where: { id: createListingDto.userId },
-    });
-
-    if (!user) {
-      throw new NotFoundException(
-        `User with ID ${createListingDto.userId} not found`,
-      );
-    }
-
-    return this.prisma.listing.create({
-      data: createListingDto,
-      include: {
-        user: true,
-      },
-    });
+    // Foreign key constraint will handle user existence validation
+    return this.listingsRepository.create(createListingDto, true);
   }
 
   async findAll() {
-    return this.prisma.listing.findMany({
-      include: {
-        user: true,
-      },
-    });
+    return this.listingsRepository.findAll(true);
   }
 
   async findOne(id: number) {
-    const listing = await this.prisma.listing.findUnique({
-      where: { id },
-      include: {
-        user: true,
-      },
-    });
+    const listing = await this.listingsRepository.findById(id, true);
 
     if (!listing) {
       throw new NotFoundException(`Listing with ID ${id} not found`);
@@ -51,42 +31,22 @@ export class ListingsService {
   }
 
   async findByUser(userId: number) {
-    // Verify that user exists
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new NotFoundException(`User with ID ${userId} not found`);
-    }
-
-    return this.prisma.listing.findMany({
-      where: { userId },
-      include: {
-        user: true,
-      },
-    });
+    // Simply return listings for the user ID
+    // If user doesn't exist, empty array will be returned
+    return this.listingsRepository.findByUserId(userId, true);
   }
 
   async update(id: number, updateListingDto: UpdateListingDto) {
     // Check if listing exists
     await this.findOne(id);
 
-    return this.prisma.listing.update({
-      where: { id },
-      data: updateListingDto,
-      include: {
-        user: true,
-      },
-    });
+    return this.listingsRepository.update(id, updateListingDto, true);
   }
 
   async remove(id: number) {
     // Check if listing exists
     await this.findOne(id);
 
-    return this.prisma.listing.delete({
-      where: { id },
-    });
+    return this.listingsRepository.delete(id);
   }
 }

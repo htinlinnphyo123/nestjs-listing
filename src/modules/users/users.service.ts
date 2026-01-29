@@ -2,21 +2,24 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  Inject,
 } from '@nestjs/common';
-import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
+import type { IUsersRepository } from './repositories/users.repository.interface';
+import { USERS_REPOSITORY } from './repositories/users.repository.interface';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    @Inject(USERS_REPOSITORY)
+    private readonly usersRepository: IUsersRepository,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
-      return await this.prisma.user.create({
-        data: createUserDto,
-      });
+      return await this.usersRepository.create(createUserDto);
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -33,20 +36,11 @@ export class UsersService {
   }
 
   async findAll() {
-    return this.prisma.user.findMany({
-      include: {
-        listings: true,
-      },
-    });
+    return this.usersRepository.findAll(true);
   }
 
   async findOne(id: number) {
-    const user = await this.prisma.user.findUnique({
-      where: { id },
-      include: {
-        listings: true,
-      },
-    });
+    const user = await this.usersRepository.findById(id, true);
 
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -60,10 +54,7 @@ export class UsersService {
     await this.findOne(id);
 
     try {
-      return await this.prisma.user.update({
-        where: { id },
-        data: updateUserDto,
-      });
+      return await this.usersRepository.update(id, updateUserDto);
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -79,8 +70,6 @@ export class UsersService {
     // Check if user exists
     await this.findOne(id);
 
-    return this.prisma.user.delete({
-      where: { id },
-    });
+    return this.usersRepository.delete(id);
   }
 }
